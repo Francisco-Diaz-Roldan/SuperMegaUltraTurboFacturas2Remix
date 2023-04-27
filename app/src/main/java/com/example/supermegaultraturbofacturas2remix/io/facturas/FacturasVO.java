@@ -1,6 +1,5 @@
-package com.example.supermegaultraturbofacturas2remix.io;
+package com.example.supermegaultraturbofacturas2remix.io.facturas;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FacturasVO {
@@ -32,7 +31,7 @@ public class FacturasVO {
 
     public class Factura {
         private  String descEstado;
-        private float importeOrdenacion;
+        private double importeOrdenacion;
         private  String fecha;
 
 
@@ -42,7 +41,7 @@ public class FacturasVO {
          * @param importeOrdenacion
          * @param fecha
          */
-        public Factura(String descEstado, float importeOrdenacion, String fecha) {
+        public Factura(String descEstado, double importeOrdenacion, String fecha) {
             this.descEstado = descEstado;
             this.importeOrdenacion = importeOrdenacion;
             this.fecha = fecha;
@@ -52,24 +51,13 @@ public class FacturasVO {
             return descEstado;
         }
 
-        public void setDescEstado(String descEstado) {
-            this.descEstado = descEstado;
-        }
-
-        public float getImporteOrdenacion() {
+        public double getImporteOrdenacion() {
             return importeOrdenacion;
         }
 
-        public void setImporteOrdenacion(float importeOrdenacion) {
-            this.importeOrdenacion = importeOrdenacion;
-        }
 
         public String getFecha() {
             return fecha;
-        }
-
-        public void setFecha(String fecha) {
-            this.fecha = fecha;
         }
     }
 }

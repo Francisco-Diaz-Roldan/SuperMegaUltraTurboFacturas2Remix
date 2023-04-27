@@ -1,11 +1,13 @@
-package com.example.supermegaultraturbofacturas2remix.io;
+package com.example.supermegaultraturbofacturas2remix.io.api;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FacturasAdapter {
+
+//Creamos un adapter para coger los datos de intenert
+public class APIAdapter {
 
     private static FacturasService API_SERVICE;
 
