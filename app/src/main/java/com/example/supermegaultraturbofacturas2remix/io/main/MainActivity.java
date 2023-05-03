@@ -1,6 +1,7 @@
 package com.example.supermegaultraturbofacturas2remix.io.main;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuHost;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.supermegaultraturbofacturas2remix.filtros.FiltrosActivity;
 import com.example.supermegaultraturbofacturas2remix.R;
@@ -29,6 +31,19 @@ public class MainActivity extends AppCompatActivity {
     private FacturaAdapter adapter;
 
     private RecyclerView rv1;
+
+    // TODO En el onCreate() hacemos la llamada al API, y en el onResume() hacemos el filtrar.
+    //  Tenemos que hacer una lista fuera para acceder a los datos en toda la Actividad
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            Toast.makeText(this, data.getStringExtra("hola"), Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,17 +80,28 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menuFiltros://En caso de que acceda al menu con el id del menuFiltros
                         //Intent es para viajar entre actividades entre otras muchas cosas
                         //Declaro un nuevo intent y le paso la actividad en la que estoy y la actividad a la que quiero ir
+                        //El intent es una clase que permite pasar de una clase a otra, aunque antes de ejecutarlo hay que añadirle cosas (los datos que le queremos pasar) al intent
+
                         Intent intent = new Intent(MainActivity.this, FiltrosActivity.class);
+
                         //Lanzo el intent para que haga lo que quiero y como hay un startActivity tengo que destruir la actividad
                         //en caso de querer cambiar de activity lo pondría al pricipio
-                        startActivity(intent);
+                        startActivityForResult(intent, 1);
                         return true;
                 }
                 return false;
             }
         });
+
+
     }
 
+
+//Tras el onCreate se llama al onResume (ver ciclo de vida de la aplicacion)
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
 
     private void enqueueFacturas() {

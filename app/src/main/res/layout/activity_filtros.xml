@@ -23,6 +23,8 @@
             app:titleTextAppearance="@style/Toolbar.TitleText" />
     </com.google.android.material.appbar.AppBarLayout>
 
+
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
@@ -44,8 +46,8 @@
                 android:layout_marginTop="68dp"
                 android:layout_marginEnd="300dp"
                 android:layout_marginBottom="480dp"
-                android:backgroundTint="@color/lighter_grey"
-                android:text="día/mes/año"
+                android:backgroundTint="@color/light_grey"
+                android:text="@string/activity_filtros_textview_dia_mes_ano"
                 android:textAllCaps="false"
                 android:textColor="@color/light_black"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -61,8 +63,8 @@
                 android:layout_marginTop="68dp"
                 android:layout_marginEnd="140dp"
                 android:layout_marginBottom="480dp"
-                android:backgroundTint="@color/lighter_grey"
-                android:text="día/mes/año"
+                android:backgroundTint="@color/light_grey"
+                android:text="@string/activity_filtros_textview_dia_mes_ano"
                 android:textAllCaps="false"
                 android:textColor="@color/light_black"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -75,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
-                android:text="Desde:"
+                android:text="@string/activity_filtros_textview_desde"
                 app:layout_constraintBottom_toTopOf="@+id/fechaDesde"
                 app:layout_constraintStart_toStartOf="@+id/fechaDesde"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -85,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
-                android:text="Hasta:"
+                android:text="@string/activity_filtros_textview_hasta"
                 app:layout_constraintBottom_toTopOf="@+id/fechaHasta"
                 app:layout_constraintStart_toStartOf="@+id/fechaHasta"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -94,7 +96,7 @@
                 android:id="@+id/tvFechaEmision"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Con fecha de emisión"
+                android:text="@string/activity_filtros_textview_con_fecha_de_emision"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -125,7 +127,7 @@
                 android:id="@+id/tvMinSeekbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text="@string/activity_filtros_textview_cero"
                 app:layout_constraintBottom_toTopOf="@+id/seekBar"
                 app:layout_constraintStart_toStartOf="@+id/seekBar" />
 
@@ -133,7 +135,7 @@
                 android:id="@+id/tvMaxSeekbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:text="TextViewACambiar por un valorMaximo"
                 app:layout_constraintBottom_toTopOf="@+id/seekBar"
                 app:layout_constraintEnd_toEndOf="@+id/seekBar" />
 
@@ -141,7 +143,7 @@
                 android:id="@+id/tvImporteTitulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Por un importe"
+                android:text="@string/activity_filtros_textview_por_un_importe"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/tvMinSeekbar"
@@ -153,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="TextView"
+                android:text="TextViewACAMBIAR "
                 android:textColor="@color/green"
                 app:layout_constraintBottom_toTopOf="@+id/seekBar"
                 app:layout_constraintEnd_toEndOf="@+id/view"
@@ -175,7 +177,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="325dp"
-                android:text="Por estado"
+                android:text="@string/activity_filtros_textview_por_estado"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -183,49 +185,49 @@
                 app:layout_constraintTop_toBottomOf="@+id/view2" />
 
             <CheckBox
-                android:id="@+id/cbPagadas"
+                android:id="@+id/chbxPagadas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:text="Pagadas"
+                android:text="@string/activity_filtros_checkbox_pagadas"
                 app:layout_constraintStart_toStartOf="@+id/tvEstadoTitulo"
                 app:layout_constraintTop_toBottomOf="@+id/tvEstadoTitulo" />
 
             <CheckBox
-                android:id="@+id/cbAnuladas"
+                android:id="@+id/chbxAnuladas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Anuladas"
-                app:layout_constraintStart_toStartOf="@+id/cbPagadas"
-                app:layout_constraintTop_toBottomOf="@+id/cbPagadas" />
+                android:text="@string/activity_filtros_checkbox_anuladas"
+                app:layout_constraintStart_toStartOf="@+id/chbxPagadas"
+                app:layout_constraintTop_toBottomOf="@+id/chbxPagadas" />
 
             <CheckBox
-                android:id="@+id/cbCuotaFija"
+                android:id="@+id/chbxCuotaFija"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Cuota Fija"
-                app:layout_constraintStart_toStartOf="@+id/cbAnuladas"
-                app:layout_constraintTop_toBottomOf="@+id/cbAnuladas" />
+                android:text="@string/activity_filtros_checkbox_cuota_fija"
+                app:layout_constraintStart_toStartOf="@+id/chbxAnuladas"
+                app:layout_constraintTop_toBottomOf="@+id/chbxAnuladas" />
 
             <CheckBox
-                android:id="@+id/cbPendientesPago"
+                android:id="@+id/chbxPendientesPago"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Pendientes de pago"
-                app:layout_constraintStart_toStartOf="@+id/cbCuotaFija"
-                app:layout_constraintTop_toBottomOf="@+id/cbCuotaFija" />
+                android:text="@string/activity_filtros_checkbox_pendientes_de_pago"
+                app:layout_constraintStart_toStartOf="@+id/chbxCuotaFija"
+                app:layout_constraintTop_toBottomOf="@+id/chbxCuotaFija" />
 
             <CheckBox
-                android:id="@+id/cbPlanPago"
+                android:id="@+id/chbxPlanPago"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Plan de pago"
-                app:layout_constraintStart_toStartOf="@+id/cbPendientesPago"
-                app:layout_constraintTop_toBottomOf="@+id/cbPendientesPago" />
+                android:text="@string/activity_filtros_checkbox_plan_de_pago"
+                app:layout_constraintStart_toStartOf="@+id/chbxPendientesPago"
+                app:layout_constraintTop_toBottomOf="@+id/chbxPendientesPago" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -238,7 +240,7 @@
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="8dp"
-        android:text="Aplicar filtros"
+        android:text="@string/activity_filtros_textview_aplicar_filtros"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/eliminarFiltros"
@@ -251,7 +253,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Borrar filtros"
+        android:text="@string/activity_filtros_textview_borrar_filtros"
         android:textAllCaps="false"
         android:textColor="@color/green"
         app:layout_constraintBottom_toBottomOf="parent"

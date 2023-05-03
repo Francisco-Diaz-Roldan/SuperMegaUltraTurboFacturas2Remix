@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">SuperMegaUltraTurboFacturas2Remix</string>
+    <string name="activity_filtros_textview_dia_mes_ano">día/mes/año</string>
+    <string name="activity_filtros_textview_desde">Desde:</string>
+    <string name="activity_filtros_textview_hasta">Hasta:</string>
+    <string name="activity_filtros_textview_con_fecha_de_emision">Con fecha de emision</string>
+    <string name="activity_filtros_textview_cero">0</string>
+    <string name="activity_filtros_textview_por_un_importe">Por un importe</string>
+    <string name="activity_filtros_textview_por_estado">Por estado</string>
+    <string name="activity_filtros_checkbox_pagadas">Pagadas</string>
+    <string name="activity_filtros_checkbox_anuladas">Anuladas</string>
+    <string name="activity_filtros_checkbox_cuota_fija">Cuota Fija</string>
+    <string name="activity_filtros_checkbox_pendientes_de_pago">Pendientes de pago</string>
+    <string name="activity_filtros_checkbox_plan_de_pago">Plan de pago</string>
+    <string name="activity_filtros_textview_aplicar_filtros">Aplicar filtros</string>
+    <string name="activity_filtros_textview_borrar_filtros">Borrar filtros</string>
 </resources>

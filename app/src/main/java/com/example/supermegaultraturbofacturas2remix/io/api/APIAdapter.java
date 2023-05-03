@@ -11,7 +11,7 @@ public class APIAdapter {
 
     private static FacturasService API_SERVICE;
 
-    private static final String BASE_URL = "https://raw.githubusercontent.com/marruiart/json/main/";
+    private static final String BASE_URL = "https://viewnextandroid.mocklab.io/";
 
     public static FacturasService getApiService() {
 
