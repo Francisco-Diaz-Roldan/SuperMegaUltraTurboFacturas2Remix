@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 
 public interface FacturasService {
 
-    @GET("facturas")
+    @GET("README.md")
     Call<FacturasVO> getObjetoFacturas();
 
 }

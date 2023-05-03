@@ -14,7 +14,8 @@
         android:theme="@style/Theme.SuperMegaUltraTurboFacturas2Remix"
         tools:targetApi="31">
         <activity
-            android:name=".FiltrosActivity"
+            android:name=".filtros.FiltrosActivity"
+            android:theme="@style/Theme.SuperMegaUltraTurboFacturas2Remix.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".io.main.MainActivity"

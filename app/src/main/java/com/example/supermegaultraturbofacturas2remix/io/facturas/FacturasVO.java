@@ -1,5 +1,7 @@
 package com.example.supermegaultraturbofacturas2remix.io.facturas;
 
+//Hacemos la plantilla de lo que van a tener las facturas en una nueva clase
+
 import java.util.List;
 
 public class FacturasVO {
