@@ -1,5 +1,7 @@
 package com.example.supermegaultraturbofacturas2remix.io.api;
 
+import static com.example.supermegaultraturbofacturas2remix.constantes.Constantes.PALABRA_CLAVE_BUSQUEDA_URL;
+
 import com.example.supermegaultraturbofacturas2remix.io.facturas.FacturasVO;
 
 import retrofit2.Call;
@@ -7,7 +9,7 @@ import retrofit2.http.GET;
 
 public interface FacturasService {
 
-    @GET("facturas")
+    @GET(PALABRA_CLAVE_BUSQUEDA_URL)
     Call<FacturasVO> getObjetoFacturas();
 
 }

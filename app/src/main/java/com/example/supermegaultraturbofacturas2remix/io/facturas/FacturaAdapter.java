@@ -1,5 +1,11 @@
 package com.example.supermegaultraturbofacturas2remix.io.facturas;
 
+import static com.example.supermegaultraturbofacturas2remix.constantes.Constantes.ESTADO_PAGADA;
+import static com.example.supermegaultraturbofacturas2remix.constantes.Constantes.ESTADO_PENDIENTE_PAGO;
+import static com.example.supermegaultraturbofacturas2remix.constantes.Constantes.FUNCIONALIDAD_NO_DISPONIBLE;
+import static com.example.supermegaultraturbofacturas2remix.constantes.Constantes.MONEDA;
+
+
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -40,13 +46,13 @@ public class FacturaAdapter extends RecyclerView.Adapter<FacturaAdapter.ViewHold
     public void onBindViewHolder(@NonNull FacturaAdapter.ViewHolder holder, int position) {
         holder.tvFecha.setText(listaFactura.get(position).getFecha());
         holder.tvDescEstado.setText(listaFactura.get(position).getDescEstado());
-        holder.tvImporteOrdenacion.setText(String.valueOf(listaFactura.get(position).getImporteOrdenacion()) + "€");
+        holder.tvImporteOrdenacion.setText((listaFactura.get(position).getImporteOrdenacion()) + MONEDA);
 
 
         //Para cambiar el color del textView tvDescEstado en función de lo que ponga
-        if (listaFactura.get(position).getDescEstado().equals("Pendiente de pago")) {
+        if (listaFactura.get(position).getDescEstado().equals(ESTADO_PENDIENTE_PAGO)) {
             holder.tvDescEstado.setTextColor(Color.RED);
-        } else if (listaFactura.get(position).getDescEstado().equals("Pagada")) {
+        } else if (listaFactura.get(position).getDescEstado().equals(ESTADO_PAGADA)) {
             holder.tvDescEstado.setTextColor(0xFF8BC34A);
         } else {
             holder.tvDescEstado.setTextColor(Color.BLACK);
@@ -83,7 +89,7 @@ public class FacturaAdapter extends RecyclerView.Adapter<FacturaAdapter.ViewHold
                 mDialog.setContentView(R.layout.layout_popup);
                 mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 TextView mensajePopup = mDialog.findViewById(R.id.mensajePopup);
-                mensajePopup.setText("Esta funcionalidad aún no está disponible");
+                mensajePopup.setText(FUNCIONALIDAD_NO_DISPONIBLE);
                 mDialog.show();
                 Button cerrarButton = mDialog.findViewById(R.id.botonCerrar);
                 cerrarButton.setOnClickListener(new View.OnClickListener() {

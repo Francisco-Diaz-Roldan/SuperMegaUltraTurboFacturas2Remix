@@ -1,5 +1,7 @@
 package com.example.supermegaultraturbofacturas2remix.io.api;
 
+import static com.example.supermegaultraturbofacturas2remix.constantes.Constantes.URL_JSON;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -11,7 +13,7 @@ public class APIAdapter {
 
     private static FacturasService API_SERVICE;
 
-    private static final String BASE_URL = "https://viewnextandroid.mocklab.io/";
+    private static final String BASE_URL = URL_JSON;
 
     public static FacturasService getApiService() {
 

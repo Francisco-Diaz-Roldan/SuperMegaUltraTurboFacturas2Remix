@@ -1,5 +1,8 @@
 package com.example.supermegaultraturbofacturas2remix.filtros;
 
+import static com.example.supermegaultraturbofacturas2remix.constantes.Constantes.BARRA_ESPACIADORA;
+import static com.example.supermegaultraturbofacturas2remix.constantes.Constantes.FACTURAS;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.supermegaultraturbofacturas2remix.R;
@@ -32,7 +37,7 @@ public class FiltrosActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_filtros);
 
         //Cambiar nombre de la toolbar del proyecto por el nombre que yo quiera
-        FiltrosActivity.this.setTitle("Facturas");
+        FiltrosActivity.this.setTitle(FACTURAS);
 
 
         //Cojo la toolbar creada en el xml y la meto en el codigo
@@ -50,7 +55,7 @@ public class FiltrosActivity extends AppCompatActivity  {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 //Inflo el menu para que se vea (es como el id pero con menu) y le paso el menu
-                menuInflater.inflate(R.menu.menu_main, menu);
+                menuInflater.inflate(R.menu.menu_close, menu);
             }
 
             //Cuando selecciono el elemento del menu en este caso
@@ -80,6 +85,7 @@ public class FiltrosActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
+                // TODO cambiar esto
                 intent.putExtra("hola", "hola");
                 setResult(RESULT_OK, intent);
                 finish();
@@ -111,10 +117,20 @@ public class FiltrosActivity extends AppCompatActivity  {
                 int month = calendario.get(Calendar.MONTH);
                 int day = calendario.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view, year1, monthofyear, dayofmonth) ->
-                        fechaDesde.setText(dayofmonth + "/" + (monthofyear+1) + "/" + year1), year, month, day);
+                        fechaDesde.setText(dayofmonth + BARRA_ESPACIADORA + (monthofyear+1) + BARRA_ESPACIADORA + year1), year, month, day);
                 dpd.show();
             }
         });
+
+        // Restablecer valor de seekBar
+        /*  SeekBar seekBar = findViewById(R.id.seekBar);
+        int maxImporte = ((int) Double.parseDouble(MainActivity.maxImporte)) + 1;
+        seekBar.setMax(maxImporte);
+        seekBar.setProgress(maxImporte);
+        TextView tvValorImporte = findViewById(R.id.tvImporte);
+        tvValorImporte.setText(String.valueOf(maxImporte));
+*/
+
 
         //Hago que el boton de fechaHasta establezca la fecha
         fechaHasta.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +141,7 @@ public class FiltrosActivity extends AppCompatActivity  {
                 int month = calendario.get(Calendar.MONTH);
                 int day = calendario.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view, year1, monthofyear, dayofmonth) ->
-                        fechaHasta.setText(dayofmonth + "/" + (monthofyear+1) + "/" + year1), year, month, day);
+                        fechaHasta.setText(dayofmonth + BARRA_ESPACIADORA + (monthofyear+1) + BARRA_ESPACIADORA + year1), year, month, day);
                 dpd.show();
             }
         });
