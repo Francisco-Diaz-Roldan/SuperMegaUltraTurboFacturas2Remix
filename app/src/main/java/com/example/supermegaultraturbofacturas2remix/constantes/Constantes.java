@@ -5,12 +5,12 @@ package com.example.supermegaultraturbofacturas2remix.constantes;
 
 public class Constantes {
 
+    //Para Factuta Adapter
     public static final String ESTADO_PENDIENTE_PAGO = "Pendiente de pago";
 
     public static final String ESTADO_PAGADA = "Pagada";
 
     public static final String PAGADAS = "Pagadas";
-
 
     public static final String FUNCIONALIDAD_NO_DISPONIBLE = "Esta funcionalidad aún no está disponible";
 
@@ -23,5 +23,7 @@ public class Constantes {
     public static final String PALABRA_CLAVE_BUSQUEDA_URL = "facturas";
 
     public static final String URL_JSON = "https://viewnextandroid2.wiremockapi.cloud/";
+
+    ///TODO queda hacer las constantes para las checkboxes
 
 }

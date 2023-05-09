@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SuperMegaUltraTurboFacturas2Remix</string>
+
+    <!--Strings de la main activity-->
     <string name="activity_filtros_textview_dia_mes_ano">día/mes/año</string>
     <string name="activity_filtros_textview_desde">Desde:</string>
     <string name="activity_filtros_textview_hasta">Hasta:</string>
@@ -14,9 +16,13 @@
     <string name="activity_filtros_checkbox_plan_de_pago">Plan de pago</string>
     <string name="activity_filtros_textview_aplicar_filtros">Aplicar filtros</string>
     <string name="activity_filtros_textview_borrar_filtros">Borrar filtros</string>
+
+    <!--Strings del popup-->
     <string name="layout_popup_textview_informacion">Información</string>
     <string name="layout_popup_textview_esta_funcionalidad_aun_no_esta_disponible">Esta funcionalidad aún no está disponible</string>
     <string name="layout_popup_textview_cerrar">CERRAR</string>
+
+    <!--Strings de los filtros-->
     <string name="layout_factura_textview_fecha">Fecha</string>
     <string name="layout_factura_textview_pendiente_de_pago">Pendiente de Pago</string>
     <string name="layout_factura_textview_euro">€</string>

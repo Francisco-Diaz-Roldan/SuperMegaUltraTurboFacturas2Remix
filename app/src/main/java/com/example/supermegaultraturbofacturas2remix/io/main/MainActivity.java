@@ -22,7 +22,7 @@ import com.example.supermegaultraturbofacturas2remix.filtros.FiltrosActivity;
 import com.example.supermegaultraturbofacturas2remix.R;
 import com.example.supermegaultraturbofacturas2remix.io.api.APIAdapter;
 import com.example.supermegaultraturbofacturas2remix.io.facturas.FacturaAdapter;
-import com.example.supermegaultraturbofacturas2remix.io.facturas.FacturasVO;
+import com.example.supermegaultraturbofacturas2remix.io.facturas.FacturasResult;
 
 import java.util.ArrayList;
 
@@ -36,9 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rv1;
 
-    private ArrayList<FacturasVO.Factura> listaDeFacturas;
-
-    private Toolbar toolbar;
+    private ArrayList<FacturasResult> listaFacturas;
 
     // TODO En el onCreate() hacemos la llamada al API, y en el onResume() hacemos el filtrar.
     //  Tenemos que hacer una lista fuera para acceder a los datos en toda la Actividad
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         rv1 = findViewById(R.id.rv1);
         rv1.setAdapter(rv1.getAdapter());
-
+        enqueueFacturas();
 
         //Cambiar nombre de la toolbar del proyecto por el nombre que yo quiera
         MainActivity.this.setTitle(FACTURAS);
@@ -85,67 +83,47 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 //Hago un switch para acceder al item Menu (menu que he creado -> menu_main)
 
-                if (menuItem.getItemId()==R.id.menuFiltros) {
-                    cambiarDeActividad();
+                if (menuItem.getItemId() == R.id.menuFiltros) {
+                    Intent intent = new Intent(MainActivity.this, FiltrosActivity.class);
+//TODO revisar intent
+                    intent.putExtra("facturas", listaFacturas);
+                    //Lanzo el intent para que haga lo que quiero y como hay un startActivity tengo que destruir la actividad
+                    //en caso de querer cambiar de activity lo pondría al pricipio
+                    startActivityForResult(intent, 1);
                     return true;
-                } else {
-                return false;
                 }
-                    /*case R.id.menuFiltros://En caso de que acceda al menu con el id del menuFiltros
-                        //Intent es para viajar entre actividades entre otras muchas cosas
-                        //Declaro un nuevo intent y le paso la actividad en la que estoy y la actividad a la que quiero ir
-                        //El intent es una clase que permite pasar de una clase a otra, aunque antes de ejecutarlo hay que añadirle cosas (los datos que le queremos pasar) al intent
-
-                        Intent intent = new Intent(MainActivity.this, FiltrosActivity.class);
-                        intent.putExtra(listaDeFacturas);
-
-                        //Lanzo el intent para que haga lo que quiero y como hay un startActivity tengo que destruir la actividad
-                        //en caso de querer cambiar de activity lo pondría al pricipio
-                        startActivityForResult(intent, 1);
-                        return true;
-                */
+                return false;
             }
         });
-
-        peticionDeFacturas();
     }
 
 
-
-//Tras el onCreate se llama al onResume (ver ciclo de vida de la aplicacion)
-   //En el onResume es donde se inicia el ciclo de la actividad
-    /*@Override
+    //Tras el onCreate se llama al onResume (ver ciclo de vida de la aplicacion)
+    @Override
     protected void onResume() {
         super.onResume();
-        listaDeFacturas;
-    }*/
-
-    public void cambiarDeActividad () {
-        Intent intent = new Intent(MainActivity.this , FiltrosActivity.class);
-        intent.putExtra("facturas", listaDeFacturas);
-        startActivity(intent);
     }
+    //Parcelable hace que la clase se pueda convertir y desconvertir en un objeto de tipo Bundle, lo que hace que podamos hacer un arraylist de ese objeto
 
-    private void peticionDeFacturas() {
+
+    private void enqueueFacturas() {
         //Recojo una llamada para el servicio FacturasService
-        Call<FacturasVO> facturasCall = APIAdapter.getApiService().getObjetoFacturas();
-        facturasCall.enqueue(new Callback<FacturasVO>() {
+        Call<FacturasResult> facturasCall = APIAdapter.getApiService().getObjetoFacturas();
+        facturasCall.enqueue(new Callback<FacturasResult>() {
             @Override
-            public void onResponse(Call<FacturasVO> call, Response<FacturasVO> response) {
+            public void onResponse(Call<FacturasResult> call, Response<FacturasResult> response) {
                 if(response.isSuccessful()){
-                    FacturasVO facturaObject = response.body();
+                    FacturasResult facturaObject = response.body();
                     //El log es para comprobar el tamaño de la factura por el Log
                     Log.d("onResponse facturas","Tamaño de la factura=>" + facturaObject.getFacturas().size());
-                    //Obtengo la lista de facturas
-                    listaDeFacturas = response.body().getFacturas();
-                    adapter = new FacturaAdapter(listaDeFacturas);
+                    adapter = new FacturaAdapter(response.body().getFacturas());
                     rv1.setAdapter(adapter);
                 }
             }
 
             @Override
-            public void onFailure(Call<FacturasVO> call, Throwable t) {
-                Log.d("onFailure", "Fallo callback de enqueue");
+            public void onFailure(Call<FacturasResult> call, Throwable t) {
+
             }
         });
     }

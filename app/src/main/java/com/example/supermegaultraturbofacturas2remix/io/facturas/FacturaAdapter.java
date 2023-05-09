@@ -26,11 +26,11 @@ import java.util.List;
 //Esta clase añade la lista de la factura  que hemos cogido de internet al RecyclerView
 public class FacturaAdapter extends RecyclerView.Adapter<FacturaAdapter.ViewHolder> {
 
-    private List<FacturasVO.Factura> listaFactura;
+    private List<FacturaVO> listaFactura;
     Dialog mDialog;
 
 
-    public FacturaAdapter(List<FacturasVO.Factura> listaFactura) {
+    public FacturaAdapter(List<FacturaVO> listaFactura) {
         this.listaFactura = listaFactura;
     }
 
