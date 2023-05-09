@@ -11,8 +11,8 @@ public class FiltrosVO {
     //Le añadimos los componentes del activity_filtros (main)
 
     //Paso a tipo Date los botones para trabajar con ellos
-    private Date fechaDesde;
-    private Date fechaHasta;
+    private String fechaDesde;
+    private String fechaHasta;
 
     //Incluyo el double del seekbar
     private double maxImporte;
@@ -23,7 +23,9 @@ public class FiltrosVO {
     //Hago el constructor con sus getters y setters
 
     //Constructor
-    public FiltrosVO(Date fechaDesde, Date fechaHasta, double maxImporte, HashMap<String, Boolean> estadoCheckBox) {
+
+
+    public FiltrosVO(String fechaDesde, String fechaHasta, double maxImporte, HashMap<String, Boolean> estadoCheckBox) {
         this.fechaDesde = fechaDesde;
         this.fechaHasta = fechaHasta;
         this.maxImporte = maxImporte;
@@ -31,19 +33,20 @@ public class FiltrosVO {
     }
 
     //Getters y setters
-    public Date getFechaDesde() {
+
+    public String getFechaDesde() {
         return fechaDesde;
     }
 
-    public void setFechaDesde(Date fechaDesde) {
+    public void setFechaDesde(String fechaDesde) {
         this.fechaDesde = fechaDesde;
     }
 
-    public Date getFechaHasta() {
+    public String getFechaHasta() {
         return fechaHasta;
     }
 
-    public void setFechaHasta(Date fechaHasta) {
+    public void setFechaHasta(String fechaHasta) {
         this.fechaHasta = fechaHasta;
     }
 

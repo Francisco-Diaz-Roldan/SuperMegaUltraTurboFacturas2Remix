@@ -18,13 +18,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.supermegaultraturbofacturas2remix.constantes.Constantes;
 import com.example.supermegaultraturbofacturas2remix.filtros.FiltrosActivity;
 import com.example.supermegaultraturbofacturas2remix.R;
+import com.example.supermegaultraturbofacturas2remix.filtros.FiltrosVO;
 import com.example.supermegaultraturbofacturas2remix.io.api.APIAdapter;
 import com.example.supermegaultraturbofacturas2remix.io.facturas.FacturaAdapter;
+import com.example.supermegaultraturbofacturas2remix.io.facturas.FacturaVO;
 import com.example.supermegaultraturbofacturas2remix.io.facturas.FacturasResult;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rv1;
 
-    private ArrayList<FacturasResult> listaFacturas;
+    private ArrayList<FacturaVO> listaFacturas;
 
     // TODO En el onCreate() hacemos la llamada al API, y en el onResume() hacemos el filtrar.
     //  Tenemos que hacer una lista fuera para acceder a los datos en toda la Actividad
@@ -85,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (menuItem.getItemId() == R.id.menuFiltros) {
                     Intent intent = new Intent(MainActivity.this, FiltrosActivity.class);
-//TODO revisar intent
+                    //TODO revisar intent
                     intent.putExtra("facturas", listaFacturas);
                     //Lanzo el intent para que haga lo que quiero y como hay un startActivity tengo que destruir la actividad
                     //en caso de querer cambiar de activity lo pondría al pricipio
@@ -116,7 +121,12 @@ public class MainActivity extends AppCompatActivity {
                     FacturasResult facturaObject = response.body();
                     //El log es para comprobar el tamaño de la factura por el Log
                     Log.d("onResponse facturas","Tamaño de la factura=>" + facturaObject.getFacturas().size());
-                    adapter = new FacturaAdapter(response.body().getFacturas());
+                    String datosFiltro = getIntent().getStringExtra(Constantes.FILTRO);
+                    if (datosFiltro != null) {
+                        datosFiltrados(datosFiltro);
+                    }
+                    listaFacturas = (ArrayList<FacturaVO>) response.body().getFacturas();
+                    adapter = new FacturaAdapter(listaFacturas);
                     rv1.setAdapter(adapter);
                 }
             }
@@ -126,6 +136,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void datosFiltrados(String datosFiltro) {
+        FiltrosVO filtrosVO = new Gson().fromJson(datosFiltro, FiltrosVO.class);
+        filtrosVO.getFechaDesde();
+        Log.d("prueba", filtrosVO.getFechaDesde());
+        Log.d("prueba", filtrosVO.getFechaHasta());
     }
 }
 
