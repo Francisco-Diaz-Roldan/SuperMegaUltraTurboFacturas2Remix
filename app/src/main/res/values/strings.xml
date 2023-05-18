@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SuperMegaUltraTurboFacturas2Remix</string>
+    <string name="app_name">FacturasV2</string>
 
     <!--Strings de la main activity-->
     <string name="activity_filtros_textview_dia_mes_ano">día/mes/año</string>

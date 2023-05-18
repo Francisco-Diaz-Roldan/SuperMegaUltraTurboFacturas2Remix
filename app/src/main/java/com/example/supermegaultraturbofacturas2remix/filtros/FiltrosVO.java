@@ -3,7 +3,6 @@ package com.example.supermegaultraturbofacturas2remix.filtros;
 // Creo una clase en la que hago todos los filtros con toda la informacion que le quiero pasar
 // y hago un intent para pasar los datos de una actividad a otra
 
-import java.util.Date;
 import java.util.HashMap;
 
 public class FiltrosVO {
@@ -15,7 +14,7 @@ public class FiltrosVO {
     private String fechaHasta;
 
     //Incluyo el double del seekbar
-    private int maxImporte;
+    private int importeSeleccionado;
 
     //Hago un mapa para guardar todas las checkboxes
     private HashMap<String, Boolean> estadoCheckBox = new HashMap<>();
@@ -25,10 +24,10 @@ public class FiltrosVO {
     //Constructor
 
 
-    public FiltrosVO(String fechaDesde, String fechaHasta, int maxImporte, HashMap<String, Boolean> estadoCheckBox) {
+    public FiltrosVO(String fechaDesde, String fechaHasta, int importeSeleccionado, HashMap<String, Boolean> estadoCheckBox) {
         this.fechaDesde = fechaDesde;
         this.fechaHasta = fechaHasta;
-        this.maxImporte = maxImporte;
+        this.importeSeleccionado = importeSeleccionado;
         this.estadoCheckBox = estadoCheckBox;
     }
 
@@ -50,12 +49,12 @@ public class FiltrosVO {
         this.fechaHasta = fechaHasta;
     }
 
-    public int getMaxImporte() {
-        return maxImporte;
+    public int getImporteSeleccionado() {
+        return importeSeleccionado;
     }
 
-    public void setMaxImporte(int maxImporte) {
-        this.maxImporte = maxImporte;
+    public void setImporteSeleccionado(int importeSeleccionado) {
+        this.importeSeleccionado = importeSeleccionado;
     }
 
     public HashMap<String, Boolean> getEstadoCheckBox() {

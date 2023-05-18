@@ -3,7 +3,6 @@ package com.example.supermegaultraturbofacturas2remix.io.main;
 import static com.example.supermegaultraturbofacturas2remix.constantes.Constantes.FACTURAS;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuHost;
@@ -12,13 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.supermegaultraturbofacturas2remix.constantes.Constantes;
 import com.example.supermegaultraturbofacturas2remix.filtros.FiltrosActivity;
@@ -33,7 +30,6 @@ import com.google.gson.Gson;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
                     //Lanzo el intent para que haga lo que quiero y como hay un startActivity tengo que destruir la actividad
                     //en caso de querer cambiar de activity lo pondría al pricipio
-                    startActivityForResult(intent, 1);
+                    startActivity(intent);
                     return true;
                 }
                 return false;
@@ -153,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<FacturaVO> filtroLista;
 
         //Comprobamos si hay que filtrar la seekbar y hacemos los cambios
-        filtroLista =  comprobarSeekBar(filtrosVO.getMaxImporte());
+        filtroLista =  comprobarSeekBar(filtrosVO.getImporteSeleccionado());
         //Vemos si hay que filtrar las fechas y las filtramos
         if(!filtrosVO.getFechaDesde().equals("día/mes/año")  ||
                 !filtrosVO.getFechaHasta().equals("día/mes/año")) {

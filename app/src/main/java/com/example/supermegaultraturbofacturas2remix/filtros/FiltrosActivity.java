@@ -1,13 +1,6 @@
 package com.example.supermegaultraturbofacturas2remix.filtros;
 
-import static com.example.supermegaultraturbofacturas2remix.constantes.Constantes.BARRA_ESPACIADORA;
 import static com.example.supermegaultraturbofacturas2remix.constantes.Constantes.FACTURAS;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuHost;
-import androidx.core.view.MenuProvider;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -16,25 +9,25 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.supermegaultraturbofacturas2remix.R;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
+
 import com.example.supermegaultraturbofacturas2remix.constantes.Constantes;
-import com.example.supermegaultraturbofacturas2remix.io.facturas.FacturaVO;
 import com.example.supermegaultraturbofacturas2remix.io.main.MainActivity;
+import com.example.supermegaultraturbofacturas2remix.R;
 import com.google.gson.Gson;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 //Creamoss la clase y hacemos que extienda de AppCompatActivity
@@ -68,18 +61,27 @@ public class FiltrosActivity extends AppCompatActivity {
         CheckBox chbxPlanPago = findViewById(R.id.chbxPlanPago);
 
 
+        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
+
+        int maxImporte = getIntent().getIntExtra("maxImporte", 0);
+
         // Se recoge el intent con getIntent, pasarle los datos a un objeto llamado FiltrosVO y creamos un método para establecer los datos
         String datosFiltro = getIntent().getStringExtra(Constantes.FILTRO);
         if (datosFiltro != null) {
             filtrosVO = new Gson().fromJson(datosFiltro, FiltrosVO.class);
             botonFechaHasta.setText(filtrosVO.getFechaHasta());
             botonFechaDesde.setText(filtrosVO.getFechaDesde());
-            seekBar.setProgress(filtrosVO.getMaxImporte());
-            chbxPagadas.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.PAGADAS));             chbxPagadas.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.PAGADAS));
+            seekBar.setProgress(filtrosVO.getImporteSeleccionado());
+            tvValorImporte.setText(String.valueOf(filtrosVO.getImporteSeleccionado()));
+            chbxPagadas.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.PAGADAS));
+            chbxPagadas.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.PAGADAS));
             chbxAnuladas.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.ANULADAS));
             chbxCuotaFija.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.CUOTA_FIJA));
             chbxPendientesPago.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.PENDIENTES_DE_PAGO));
             chbxPlanPago.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.PLAN_DE_PAGO));
+        } else {
+            seekBar.setProgress(maxImporte);
+            tvValorImporte.setText(String.valueOf(maxImporte));
         }
 
 
@@ -112,18 +114,14 @@ public class FiltrosActivity extends AppCompatActivity {
             dpd.show();
         });
 
-        //Seekbar
-        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
-
         //Calculamos el valor máximo de las facturas
-        int maxImporte = getIntent().getIntExtra("maxImporte", 0);
+
 
         seekBar.setMax(maxImporte);
-        seekBar.setProgress(maxImporte);
-
-        //Usamos el maximo para los textview asociados a la seekbar y controlamos el movimiento en este metodo
         pintarMaxSeekbar(maxImporte);
 
+        //Usamos el maximo para los textview asociados a la seekbar y controlamos el movimiento en este metodo
+        //pintarMaxSeekbar(maxImporte);
 
 
         //Declaro los botones
@@ -132,48 +130,41 @@ public class FiltrosActivity extends AppCompatActivity {
 
 
         //Boton para aplicar los filtros
-        botonAplicar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Gson gson = new Gson();
-                Intent intent = new Intent(FiltrosActivity.this, MainActivity.class);
-                HashMap<String, Boolean> estadosCB = new HashMap<>();
-                estadosCB.put(Constantes.PAGADAS, chbxPagadas.isChecked());
-                estadosCB.put(Constantes.ANULADAS, chbxAnuladas.isChecked());
-                estadosCB.put(Constantes.CUOTA_FIJA, chbxCuotaFija.isChecked());
-                estadosCB.put(Constantes.PENDIENTES_DE_PAGO, chbxPendientesPago.isChecked());
-                estadosCB.put(Constantes.PLAN_DE_PAGO, chbxPlanPago.isChecked());
+        botonAplicar.setOnClickListener(view -> {
+            Gson gson = new Gson();
+            Intent intent = new Intent(FiltrosActivity.this, MainActivity.class);
+            HashMap<String, Boolean> estadosCB = new HashMap<>();
+            estadosCB.put(Constantes.PAGADAS, chbxPagadas.isChecked());
+            estadosCB.put(Constantes.ANULADAS, chbxAnuladas.isChecked());
+            estadosCB.put(Constantes.CUOTA_FIJA, chbxCuotaFija.isChecked());
+            estadosCB.put(Constantes.PENDIENTES_DE_PAGO, chbxPendientesPago.isChecked());
+            estadosCB.put(Constantes.PLAN_DE_PAGO, chbxPlanPago.isChecked());
 
-                //Hago un Simple Date Format para mostrar las fechas en el formato de fecha que queremos
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/mm/yyyy");
+            //Hago un Simple Date Format para mostrar las fechas en el formato de fecha que queremos
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/mm/yyyy");
 
 
-                //Creamos un objeto filtro con los parametros obtenidos y lo enviamos
-                FiltrosVO filtroEnviado = new FiltrosVO(fechaDesde.getText().toString(), fechaHasta.getText().toString(), Integer.parseInt(tvValorImporte.getText().toString()), estadosCB);
-                //Para llevar el filtro a la otra clase
-                intent.putExtra(Constantes.FILTRO, gson.toJson(filtroEnviado));
-                startActivity(intent);
-            }
+            //Creamos un objeto filtro con los parametros obtenidos y lo enviamos
+            FiltrosVO filtroEnviado = new FiltrosVO(fechaDesde.getText().toString(), fechaHasta.getText().toString(), Integer.parseInt(tvValorImporte.getText().toString()), estadosCB);
+            //Para llevar el filtro a la otra clase
+            intent.putExtra(Constantes.FILTRO, gson.toJson(filtroEnviado));
+            startActivity(intent);
         });
 
         //Boton para eliminar los filtros
         Button botonEliminar = findViewById(R.id.eliminarFiltros);
-        botonEliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//botones de fecha por defecto
-                restablecerFechas();
+        botonEliminar.setOnClickListener(view -> {
+            //botones de fecha por defecto
+            restablecerFechas();
 
-//SeekBar por defecto
-                restablecerSeekbar(maxImporte);
+            //SeekBar por defecto
+            restablecerSeekbar(maxImporte);
 
-//Todas las checkbox por defecto
-                restablecerCheckBox();
-            }
+            //Todas las checkbox por defecto
+            restablecerCheckBox();
         });
 
     }
-
 
 
     //Al pasar de una actividad a otra cargos la lista aqui y la metemos en una variable
@@ -183,6 +174,7 @@ public class FiltrosActivity extends AppCompatActivity {
     private void cargarToolbar() {
         //Toolbar en blanco
         toolbar = findViewById(R.id.toolbarFiltros);
+        toolbar.setTitle(FACTURAS);
         FiltrosActivity.this.setSupportActionBar(toolbar);
     }
 
@@ -218,13 +210,10 @@ public class FiltrosActivity extends AppCompatActivity {
     private void pintarMaxSeekbar(int maxImporte) {
         //Seekbar y textos de la seekbar, inicializar y onClick
         SeekBar seekBar = findViewById(R.id.seekBar);
-        TextView tvMaxSeekBar = (TextView) findViewById(R.id.tvMaxSeekbar);
-        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
+        TextView tvMaxSeekBar =  findViewById(R.id.tvMaxSeekbar);
+        TextView tvValorImporte =  findViewById(R.id.tvValorImporte);
 
-        seekBar.setMax(maxImporte);
-        seekBar.setProgress(maxImporte);
         tvMaxSeekBar.setText(String.valueOf(maxImporte));
-        tvValorImporte.setText(String.valueOf(maxImporte));
 
         //Acciones a realizar en caso de mover la barra
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -278,13 +267,3 @@ public class FiltrosActivity extends AppCompatActivity {
     }
 
 }
-
-
-// Restablecer valor de seekBar
-        /*  SeekBar seekBar = findViewById(R.id.seekBar);
-        int maxImporte = ((int) Double.parseDouble(MainActivity.maxImporte)) + 1;
-        seekBar.setMax(maxImporte);
-        seekBar.setProgress(maxImporte);
-        TextView tvValorImporte = findViewById(R.id.tvImporte);
-        tvValorImporte.setText(String.valueOf(maxImporte));
-*/
