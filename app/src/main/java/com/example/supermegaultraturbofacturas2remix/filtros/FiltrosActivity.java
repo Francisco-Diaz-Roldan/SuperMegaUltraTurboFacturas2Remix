@@ -28,7 +28,10 @@ import com.example.supermegaultraturbofacturas2remix.io.facturas.FacturaVO;
 import com.example.supermegaultraturbofacturas2remix.io.main.MainActivity;
 import com.google.gson.Gson;
 
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,59 +39,25 @@ import java.util.HashMap;
 
 //Creamoss la clase y hacemos que extienda de AppCompatActivity
 
-//TODO hacer la lista auxiliar con todos los datos
-
 public class FiltrosActivity extends AppCompatActivity {
 
-    private int maxImporte;
     private Toolbar toolbar;
-    private SeekBar seekBar;
+    private String fechaInicio;
 
-    private CheckBox chbxPagadas;
-    private CheckBox chbxAnuladas;
-    private CheckBox chbxCuotaFija;
-    private CheckBox chbxPendientesPago;
-    private CheckBox chbxPlanPago;
+    private String fechaFin;
 
-
-    private TextView tvMaxSeekBar;
-    private TextView tvValorImporte;
-
-    private Button fechaDesde;
-    private Button fechaHasta;
-    private Button aplicarFiltros;
-    private Button eliminarFiltros;
-
-
+    private FiltrosVO filtrosVO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtros);
 
-        //Cargamos la lista aqui y la metemos en una variable al pasar de una actividad a otra
-        ArrayList<FacturaVO> listaFactura = new ArrayList<>();
-        ArrayList<FacturaVO> listaConTodosLosDatos = cargarListaFacturas();
+        Button botonFechaHasta = findViewById(R.id.fechaHasta);
+        Button botonFechaDesde = findViewById(R.id.fechaDesde);
+        SeekBar seekBar = findViewById(R.id.seekBar);
 
-        //Para cargar toolbar en blanco
-        cargarToolbar();
-
-        //Funcionalidades del menu de la toolbar
-        crearMenuToolBar();
-
-        //Botones para la fecha
-        obtenerFechaInicio();
-        obtenerFechaFinal();
-
-
-        //Seekbar
-        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
-
-        //Calculamos el valor máximo de las facturas
-        int maxImporte = getIntent().getIntExtra("maxImporte", 0);
-
-        //Usamos el maximo para los textview asociados a la seekbar y controlamos el movimiento en este metodo
-        pintarMaxSeekbar(maxImporte);
+        Button botonAplicar = findViewById(R.id.aplicarFiltros);
 
         //Checkbox
         //Se actualizan  las checkbox
@@ -98,11 +67,72 @@ public class FiltrosActivity extends AppCompatActivity {
         CheckBox chbxPendientesPago = findViewById(R.id.chbxPendientesPago);
         CheckBox chbxPlanPago = findViewById(R.id.chbxPlanPago);
 
+
+        // Se recoge el intent con getIntent, pasarle los datos a un objeto llamado FiltrosVO y creamos un método para establecer los datos
+        String datosFiltro = getIntent().getStringExtra(Constantes.FILTRO);
+        if (datosFiltro != null) {
+            filtrosVO = new Gson().fromJson(datosFiltro, FiltrosVO.class);
+            botonFechaHasta.setText(filtrosVO.getFechaHasta());
+            botonFechaDesde.setText(filtrosVO.getFechaDesde());
+            seekBar.setProgress(filtrosVO.getMaxImporte());
+            chbxPagadas.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.PAGADAS));             chbxPagadas.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.PAGADAS));
+            chbxAnuladas.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.ANULADAS));
+            chbxCuotaFija.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.CUOTA_FIJA));
+            chbxPendientesPago.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.PENDIENTES_DE_PAGO));
+            chbxPlanPago.setChecked(filtrosVO.getEstadoCheckBox().get(Constantes.PLAN_DE_PAGO));
+        }
+
+
+        //Para cargar toolbar en blanco
+        cargarToolbar();
+
+        //Funcionalidades del menu de la toolbar
+        crearMenuToolBar();
+
+        // Botones Fecha
+
+
+        botonFechaHasta.setOnClickListener(view -> {
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH) + 1;
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
+                    botonFechaHasta.setText(dayofmonth + "/" + (monthofyear + 1) + "/" + year1), year, month, day);
+            dpd.show();
+        });
+
+        botonFechaDesde.setOnClickListener(view -> {
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH) + 1;
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
+                    botonFechaDesde.setText(dayofmonth + "/" + (monthofyear + 1) + "/" + year1), year, month, day);
+            dpd.show();
+        });
+
+        //Seekbar
+        TextView tvValorImporte = (TextView) findViewById(R.id.tvValorImporte);
+
+        //Calculamos el valor máximo de las facturas
+        int maxImporte = getIntent().getIntExtra("maxImporte", 0);
+
+        seekBar.setMax(maxImporte);
+        seekBar.setProgress(maxImporte);
+
+        //Usamos el maximo para los textview asociados a la seekbar y controlamos el movimiento en este metodo
+        pintarMaxSeekbar(maxImporte);
+
+
+
+        //Declaro los botones
+        Button fechaDesde = findViewById(R.id.fechaDesde);
+        Button fechaHasta = findViewById(R.id.fechaHasta);
+
+
         //Boton para aplicar los filtros
-        Button botonAplicar = findViewById(R.id.aplicarFiltros);
         botonAplicar.setOnClickListener(new View.OnClickListener() {
-            Button botonFechaDesde = findViewById(R.id.fechaDesde);
-            Button botonFechaHasta = findViewById(R.id.fechaHasta);
             @Override
             public void onClick(View view) {
                 Gson gson = new Gson();
@@ -115,11 +145,11 @@ public class FiltrosActivity extends AppCompatActivity {
                 estadosCB.put(Constantes.PLAN_DE_PAGO, chbxPlanPago.isChecked());
 
                 //Hago un Simple Date Format para mostrar las fechas en el formato de fecha que queremos
-
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/mm/yyyy");
 
 
                 //Creamos un objeto filtro con los parametros obtenidos y lo enviamos
-                FiltrosVO filtroEnviado = new FiltrosVO(botonFechaDesde.getText().toString(), botonFechaHasta.getText().toString(), Integer.parseInt(tvValorImporte.getText().toString()), estadosCB);
+                FiltrosVO filtroEnviado = new FiltrosVO(fechaDesde.getText().toString(), fechaHasta.getText().toString(), Integer.parseInt(tvValorImporte.getText().toString()), estadosCB);
                 //Para llevar el filtro a la otra clase
                 intent.putExtra(Constantes.FILTRO, gson.toJson(filtroEnviado));
                 startActivity(intent);
@@ -145,15 +175,9 @@ public class FiltrosActivity extends AppCompatActivity {
     }
 
 
-//Métodos a los que llamamos arriba -->
 
     //Al pasar de una actividad a otra cargos la lista aqui y la metemos en una variable
-    private ArrayList<FacturaVO> cargarListaFacturas() {
-        ArrayList<FacturaVO> listaFactura = getIntent().getParcelableArrayListExtra("facturas");
-        Log.d("tamaño facturas", "" + listaFactura.size());
 
-        return listaFactura;
-    }
 
     //Cambio el color de la toolbar
     private void cargarToolbar() {
@@ -189,45 +213,6 @@ public class FiltrosActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
-
-
-    private String obtenerFechaInicio() {
-//Boton para fecha desde, inicializar y al hacer click salga el calendario
-        Button botonFechaDesde = findViewById(R.id.fechaDesde);
-        botonFechaDesde.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH) + 1;
-                int day = c.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
-                        botonFechaDesde.setText(dayofmonth + "/" + (monthofyear + 1) + "/" + year1), year, month, day);
-                dpd.show();
-            }
-        });
-
-        return botonFechaDesde.getText().toString();
-    }
-
-    private String obtenerFechaFinal() {
-//Boton fecha hasta, inicializar y al hacer click salga el calendario
-        Button botonFechaHasta = findViewById(R.id.fechaHasta);
-        botonFechaHasta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH) + 1;
-                int day = c.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dpd = new DatePickerDialog(FiltrosActivity.this, (view1, year1, monthofyear, dayofmonth) ->
-                        botonFechaHasta.setText(dayofmonth + "/" + (monthofyear + 1) + "/" + year1), year, month, day);
-                dpd.show();
-            }
-        });
-
-        return botonFechaHasta.getText().toString();
     }
 
     private void pintarMaxSeekbar(int maxImporte) {

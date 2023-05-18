@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.supermegaultraturbofacturas2remix.constantes.Constantes;
@@ -28,8 +30,13 @@ import com.example.supermegaultraturbofacturas2remix.io.facturas.FacturaVO;
 import com.example.supermegaultraturbofacturas2remix.io.facturas.FacturasResult;
 import com.google.gson.Gson;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,19 +49,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rv1;
 
     private ArrayList<FacturaVO> listaFacturas;
+    private int maxImporte;
 
-    // TODO En el onCreate() hacemos la llamada al API, y en el onResume() hacemos el filtrar.
-    //  Tenemos que hacer una lista fuera para acceder a los datos en toda la Actividad
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-            Toast.makeText(this, data.getStringExtra("hola"), Toast.LENGTH_SHORT).show();
-        }
-    }
-
+    private FiltrosVO filtrosVO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +84,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 //Hago un switch para acceder al item Menu (menu que he creado -> menu_main)
-
+                //Esto e  para pasar los datos a otra actividad
                 if (menuItem.getItemId() == R.id.menuFiltros) {
                     Intent intent = new Intent(MainActivity.this, FiltrosActivity.class);
-                    //TODO revisar intent
-                    intent.putExtra("facturas", listaFacturas);
+                    intent.putExtra("maxImporte", maxImporte);
+
+                    Gson gson = new Gson();
+                    if (filtrosVO != null) {
+                        intent.putExtra(Constantes.FILTRO, gson.toJson(filtrosVO));
+                    }
+
                     //Lanzo el intent para que haga lo que quiero y como hay un startActivity tengo que destruir la actividad
                     //en caso de querer cambiar de activity lo pondría al pricipio
                     startActivityForResult(intent, 1);
@@ -118,14 +120,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<FacturasResult> call, Response<FacturasResult> response) {
                 if(response.isSuccessful()){
-                    FacturasResult facturaObject = response.body();
-                    //El log es para comprobar el tamaño de la factura por el Log
-                    Log.d("onResponse facturas","Tamaño de la factura=>" + facturaObject.getFacturas().size());
+
+                    listaFacturas = (ArrayList<FacturaVO>) response.body().getFacturas();
+
+                    for (int i = 0; i < listaFacturas.size(); i++) {
+                        int importe =  (int) listaFacturas.get(i).getImporteOrdenacion();
+                        if (importe > maxImporte)
+                            maxImporte = importe;
+                    }
+
+                    maxImporte++;
+
                     String datosFiltro = getIntent().getStringExtra(Constantes.FILTRO);
                     if (datosFiltro != null) {
-                        datosFiltrados(datosFiltro);
+                        listaFacturas = datosFiltrados(datosFiltro);
                     }
-                    listaFacturas = (ArrayList<FacturaVO>) response.body().getFacturas();
+
                     adapter = new FacturaAdapter(listaFacturas);
                     rv1.setAdapter(adapter);
                 }
@@ -138,11 +148,99 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void datosFiltrados(String datosFiltro) {
-        FiltrosVO filtrosVO = new Gson().fromJson(datosFiltro, FiltrosVO.class);
-        filtrosVO.getFechaDesde();
-        Log.d("prueba", filtrosVO.getFechaDesde());
-        Log.d("prueba", filtrosVO.getFechaHasta());
+    private ArrayList<FacturaVO> datosFiltrados(String datosFiltro) {
+        filtrosVO = new Gson().fromJson(datosFiltro, FiltrosVO.class);
+        ArrayList<FacturaVO> filtroLista;
+
+        //Comprobamos si hay que filtrar la seekbar y hacemos los cambios
+        filtroLista =  comprobarSeekBar(filtrosVO.getMaxImporte());
+        //Vemos si hay que filtrar las fechas y las filtramos
+        if(!filtrosVO.getFechaDesde().equals("día/mes/año")  ||
+                !filtrosVO.getFechaHasta().equals("día/mes/año")) {
+            filtroLista = comprobarFecha(filtrosVO.getFechaDesde(), filtrosVO.getFechaHasta(), filtroLista);
+        }
+
+        //Comprobamos si hay que filtrar las checkbox
+        boolean hayBooleanoTrue = false;
+        for (Map.Entry<String, Boolean> entry : filtrosVO.getEstadoCheckBox().entrySet()) {
+            if (Boolean.TRUE.equals(entry.getValue())) {
+                hayBooleanoTrue = true;
+                break;
+            }
+        }
+
+        //Si entra por aquí es porque hay alguna checkbox marcada
+        if (hayBooleanoTrue) {
+            filtroLista = comprobarCheckBox(filtrosVO.getEstadoCheckBox(), filtroLista);
+        }
+
+        TextView tvNoDatos = findViewById(R.id.tvNoDatos);
+
+        //En caso de que no haya facturas por el filtro, mostraremos mensaje de que no hay facturas
+        if(filtroLista.isEmpty()){
+            tvNoDatos.setVisibility(View.VISIBLE);
+        }
+
+        return filtroLista;
+    }
+
+    private ArrayList<FacturaVO> comprobarFecha(String fechaInicio, String fechaFin, List<FacturaVO> filtroLista) {
+        //Creamos lista auxiliar para despues devolverla
+        ArrayList<FacturaVO> listaAux = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
+        Date fechaDesde = new Date();
+        Date fechaHasta = new Date();
+
+        //Parseamos las fechas para cambiarlas de tipo String a tipo Date
+        try {
+            fechaDesde = sdf.parse(fechaInicio);
+            fechaHasta = sdf.parse(fechaFin);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //Recorremos la lista de facturas y la que coincidan la añadimos a la lista auxiliar para luego devolverla
+        for (FacturaVO facturaFecha: filtroLista) {
+            Date fechaFactura;
+            try {
+                fechaFactura = sdf.parse(facturaFecha.getFecha());
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            if (fechaFactura.after(fechaDesde) && fechaFactura.before(fechaHasta)) {
+                listaAux.add(facturaFecha);
+            }
+        }
+
+        return listaAux;
+    }
+
+    //Miramos como ha movido la barra el usuario en los filtros y devolvemos la lista filtrada por la barra
+    private ArrayList<FacturaVO> comprobarSeekBar(int maxImporte) {
+
+        ArrayList<FacturaVO> listaAux = new ArrayList<>();
+
+        for (FacturaVO facturaSeekBar : listaFacturas) {
+            if (Double.parseDouble(String.valueOf(facturaSeekBar.getImporteOrdenacion())) < maxImporte) {
+                listaAux.add(facturaSeekBar);
+            }
+        }
+
+        return listaAux;
+    }
+
+    //Metodo filtro de las checkBox
+    private ArrayList<FacturaVO> comprobarCheckBox(Map<String, Boolean> estadoCB, List<FacturaVO> filtroLista) {
+        ArrayList<FacturaVO> listaAux = new ArrayList<>();
+
+        for (FacturaVO factura: filtroLista) {
+            String descEstado = factura.getDescEstado();
+            if (estadoCB.containsKey(descEstado) && Boolean.TRUE.equals(estadoCB.get(descEstado))) {
+                listaAux.add(factura);
+            }
+        }
+
+        return listaAux;
     }
 }
 

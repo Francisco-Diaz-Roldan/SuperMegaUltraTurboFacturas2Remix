@@ -8,6 +8,9 @@ public class FacturaVO implements Parcelable {
     private double importeOrdenacion;
     private String fecha;
 
+    public FacturaVO() {
+    }
+
     public FacturaVO(String descEstado, double importeOrdenacion, String fecha) {
         this.descEstado = descEstado;
         this.importeOrdenacion = importeOrdenacion;

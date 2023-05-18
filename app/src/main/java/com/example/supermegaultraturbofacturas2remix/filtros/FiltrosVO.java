@@ -15,7 +15,7 @@ public class FiltrosVO {
     private String fechaHasta;
 
     //Incluyo el double del seekbar
-    private double maxImporte;
+    private int maxImporte;
 
     //Hago un mapa para guardar todas las checkboxes
     private HashMap<String, Boolean> estadoCheckBox = new HashMap<>();
@@ -25,7 +25,7 @@ public class FiltrosVO {
     //Constructor
 
 
-    public FiltrosVO(String fechaDesde, String fechaHasta, double maxImporte, HashMap<String, Boolean> estadoCheckBox) {
+    public FiltrosVO(String fechaDesde, String fechaHasta, int maxImporte, HashMap<String, Boolean> estadoCheckBox) {
         this.fechaDesde = fechaDesde;
         this.fechaHasta = fechaHasta;
         this.maxImporte = maxImporte;
@@ -50,11 +50,11 @@ public class FiltrosVO {
         this.fechaHasta = fechaHasta;
     }
 
-    public double getMaxImporte() {
+    public int getMaxImporte() {
         return maxImporte;
     }
 
-    public void setMaxImporte(double maxImporte) {
+    public void setMaxImporte(int maxImporte) {
         this.maxImporte = maxImporte;
     }
 

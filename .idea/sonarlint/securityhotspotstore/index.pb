@@ -3,10 +3,6 @@
 -.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e
 S
 #.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
-Ü
-Vapp/src/main/java/com/example/supermegaultraturbofacturas2remix/io/api/APIAdapter.java,a\9\a9fb05409afae05ff1d99e7dbe35736ff85b82d6
-ã
-[app/src/main/java/com/example/supermegaultraturbofacturas2remix/io/api/FacturasService.java,8\b\8b7ef538c490df84bd2d70f0aaca41c96a5633d0
 è
 _app/src/main/java/com/example/supermegaultraturbofacturas2remix/io/facturas/FacturaAdapter.java,e\8\e8f66d34a6f3063ac8d369b9731a1309c386801e
 w

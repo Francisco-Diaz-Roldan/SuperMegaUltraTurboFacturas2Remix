@@ -12,10 +12,10 @@ public class Constantes {
 
 
     //Constantes par los estados de las checkboxes
-    public static final String PAGADAS = "Pagadas";
-    public static final String ANULADAS = "anuladas";
+    public static final String PAGADAS = "Pagada";
+    public static final String ANULADAS = "Anulada";
     public static final String CUOTA_FIJA = "Cuota fija";
-    public static final String PENDIENTES_DE_PAGO = "Pendientes de pago";
+    public static final String PENDIENTES_DE_PAGO = "Pendiente de pago";
     public static final String PLAN_DE_PAGO = "Plan de pago";
 
     public static final String FILTRO = "Filtro";
