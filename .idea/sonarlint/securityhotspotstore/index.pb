@@ -19,5 +19,23 @@ A
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 @
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
-x
-Happ/src/main/java/com/example/facturasv2/io/facturas/FacturaAdapter.java,3\1\316a929d97eea7e22e61930fcd158ed5dbb65b58
+?
+settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
+Å
+Q.idea/sonarlint/securityhotspotstore/f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164,9\b\9b9af03329b517cdd460b1ee115f2bb0ec341883
+w
+G.idea/sonarlint/issuestore/2/a/2afbb999f001938c88fa43fc2ef52abf0f8213e4,5\1\516e730a14e71f02fa73f3acd6dc7cea9a9fe002
+w
+G.idea/sonarlint/issuestore/f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164,3\1\31073cf3a12b082ef2fe0f9403916a4db3811c89
+Å
+Q.idea/sonarlint/securityhotspotstore/2/a/2afbb999f001938c88fa43fc2ef52abf0f8213e4,a\8\a8a52112049d840217cfa586a3a399d9502f9b94
+Å
+Q.idea/sonarlint/securityhotspotstore/f/0/f07866736216be0ee2aba49e392191aeae700a35,2\5\25f6469773b9f3ebb994178c1114a60412389f58
+w
+G.idea/sonarlint/issuestore/8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e,3\2\32813322c99a6c8a141ab2dc12bc10af3425f1b4
+w
+G.idea/sonarlint/issuestore/f/0/f07866736216be0ee2aba49e392191aeae700a35,b\f\bfb9453d49af9bc40f5f7a5f034be3c7ef8fa6bf
+Å
+Q.idea/sonarlint/securityhotspotstore/8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e,1\f\1fe398aa86b382486ed27d0a69bf92f68bd5edaa
+Å
+Q.idea/sonarlint/securityhotspotstore/3/1/316a929d97eea7e22e61930fcd158ed5dbb65b58,b\9\b907a8dbd28fd1c37c4b5ffbbebc01dcd36ca976

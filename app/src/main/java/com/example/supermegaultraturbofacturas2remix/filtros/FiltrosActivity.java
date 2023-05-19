@@ -265,5 +265,4 @@ public class FiltrosActivity extends AppCompatActivity {
         chBoxPendientesPago.setChecked(false);
         chBoxPlanPago.setChecked(false);
     }
-
 }

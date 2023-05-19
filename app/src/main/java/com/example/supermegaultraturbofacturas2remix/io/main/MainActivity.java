@@ -176,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
         if(filtroLista.isEmpty()){
             tvNoDatos.setVisibility(View.VISIBLE);
         }
-
         return filtroLista;
     }
 
@@ -207,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
                 listaAux.add(facturaFecha);
             }
         }
-
         return listaAux;
     }
 
@@ -221,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
                 listaAux.add(facturaSeekBar);
             }
         }
-
         return listaAux;
     }
 
@@ -235,7 +232,6 @@ public class MainActivity extends AppCompatActivity {
                 listaAux.add(factura);
             }
         }
-
         return listaAux;
     }
 }
